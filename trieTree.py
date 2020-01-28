@@ -12,8 +12,8 @@ class Trie:
 
     def add_word(self, word):
         current = self.root
-        found = False
         for char in word:
+            flag = False
             element = TrieNode(char)
             if len(current.children) == 0:
                 current.children.append(element)
@@ -21,14 +21,15 @@ class Trie:
                 current = element
             else:
                 for child in current.children:
-                    if child.char == char:
+                    if child.char.lower() == char.lower():
                         current = child
-                        found = True
+                        flag = True
                         break
-                if not found:
+                if not flag:
                     current.children.append(element)
                     element.parent = current
                     current = element
+
         current.isEnd = True
 
     def print_trie(self, curr):
@@ -38,7 +39,3 @@ class Trie:
         for child in current.children:
             print(child.char)
             self.print_trie(child)
-
-
-
-

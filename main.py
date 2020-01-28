@@ -1,16 +1,18 @@
 import os
 
 from graph import Graph
-from parser2 import Parser2
+from pyParser import Parser
 from trieTree import *
+from doc_search import *
+
 
 def folder_search(graph):
     start_path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html"  # current directory
-    p = Parser2()
+    p = Parser()
     for path, dirs, files in os.walk(start_path):
         for file in files:
             if file.__contains__('.html'):
-                g.add_vertex(file)
+                g.add_vertex(file) #TODO David: Sta je g??
             # print (os.path.join(path, file))
 
     # second pass is important because in the first one vertices are
@@ -26,13 +28,22 @@ def folder_search(graph):
 
 
 if __name__ == "__main__":
+
+    directory = input('Enter the name of the directory you wish to search: ')
+
     g = Graph()
     folder_search(g)
     g.print()
 
+    trie = Trie()
+    fill_trie(directory, trie)
+
     # trie = Trie()
-    # trie.add_word('DO')
     # trie.add_word('CAT')
     # trie.add_word('TRY')
     # trie.add_word('DONE')
+    # trie.add_word('DO')
+    # trie.add_word('TRIE')
+    # trie.add_word('CANDY')
+
     # trie.print_trie(trie.root)

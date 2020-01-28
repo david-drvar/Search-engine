@@ -5,7 +5,7 @@ import os
 from html.parser import HTMLParser
 
 
-class Parser2(HTMLParser):
+class Parser(HTMLParser):
     """
     Parser HTML dokumenata
 
