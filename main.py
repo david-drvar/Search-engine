@@ -2,7 +2,7 @@ import os
 
 from graph import Graph
 from parser2 import Parser2
-
+from trieTree import *
 
 def folder_search(graph):
     start_path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html"  # current directory
@@ -29,3 +29,10 @@ if __name__ == "__main__":
     g = Graph()
     folder_search(g)
     g.print()
+
+    # trie = Trie()
+    # trie.add_word('DO')
+    # trie.add_word('CAT')
+    # trie.add_word('TRY')
+    # trie.add_word('DONE')
+    # trie.print_trie(trie.root)
