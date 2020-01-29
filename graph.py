@@ -15,15 +15,20 @@ class Graph:
         else:
             return None
 
-    def __contains__(self, item): #checks if the vertex is in the graph
+    def __contains__(self, item):  # checks if the vertex is in the graph
         return item in self.vert_list
 
     def add_edge(self, origin, destination, weight):
-        if origin not in self.vert_list or destination not in self.vert_list:
-            raise ValueError("Vertices not in the graph")
+        # if origin not in self.vert_list or destination not in self.vert_list:
+        #     raise ValueError("Vertices not in the graph")
+
+        if origin not in self.vert_list:  # if origin or destination are not in the graph, then they are added
+            self.add_vertex(origin)
+        if destination not in self.vert_list:
+            self.add_vertex(destination)
+
         self.vert_list[origin].add_neighbour(self.vert_list[destination], weight)
-        self.vert_list[destination].add_incoming(self.vert_list[origin],weight)
-        return True
+        self.vert_list[destination].add_incoming(self.vert_list[origin], weight)
 
     def get_vertices(self):
         return self.vert_list.keys()
@@ -31,7 +36,7 @@ class Graph:
     def __iter__(self):
         return iter(self.vert_list.values())
 
-    def insert(self,file,words,links):
+    def insert(self, file, words, links):
         return self
 
     def print(self):
@@ -40,4 +45,3 @@ class Graph:
             t2 = tuple(f"{v.id}:{weight}" for v, weight in self.get_vertex(id).incoming.items())
             print(f"vertex: {id} | outgoing : {t1} \n                   incoming : {t2}")
             # print(f"edge: {id} to : {t}")
-
