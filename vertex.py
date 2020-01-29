@@ -2,7 +2,7 @@ class Vertex:
     def __init__(self, key):
         self.id = key
         self.outgoing = {}  # key is vertex object, value is weight
-        self.incoming = {}
+        self.incoming = {} # these are empty dictionaries!
 
     def add_neighbour(self, nbr, weight=None):
         self.outgoing[nbr] = weight
