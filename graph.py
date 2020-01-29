@@ -3,7 +3,7 @@ from vertex import Vertex
 
 class Graph:
     def __init__(self):
-        self.vert_list = {}
+        self.vert_list = {} # empty dictionary
 
     def add_vertex(self, key):
         new_vertex = Vertex(key)
