@@ -6,6 +6,7 @@ from trieTree import *
 def fill_trie(directory, trie):
     path = "python-2.7.7-docs-html"
     p = Parser()
+    found = False
 
     if directory != "":
         path = path + "\\" + directory
@@ -13,10 +14,13 @@ def fill_trie(directory, trie):
     for root, dirs, files in walk(path):
         for file in files:
             if ".html" in file:
+                found = True
                 path = root + "\\" + file
                 links, words = p.parse(path)
                 for word in words:
-                    trie.add_word(word)
+                    trie.add_word(word, file)
+    if not found:
+        print('There is not any html page in the specified directory')
 
 
 def folder_search(directory, graph):
