@@ -4,7 +4,7 @@ class MySet:
         self.my_set = {}
 
     def add(self,element):
-        if id not in self.my_set: # constraint on repetitive keys
+        if element not in self.my_set: # constraint on repetitive keys
             self.my_set[element] = None
 
     def discard(self,element): # doesn't raise KeyError if the element is not in the list

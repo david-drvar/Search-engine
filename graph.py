@@ -1,9 +1,19 @@
 from vertex import Vertex
+import random
 
 
 class Graph:
     def __init__(self):
-        self.vert_list = {} # empty dictionary
+        self.vert_list = {}  # empty dictionary
+
+    # def is_directed(self):
+    #     return True
+    #
+    # def is_multigraph(self):
+    #     return False
+
+    def __len__(self):
+        return self.vert_list.__len__()
 
     def add_vertex(self, key):
         new_vertex = Vertex(key)
@@ -45,3 +55,24 @@ class Graph:
             t2 = tuple(f"{v.id}:{weight}" for v, weight in self.get_vertex(id).incoming.items())
             print(f"vertex: {id} | outgoing : {t1} \n                   incoming : {t2}")
             # print(f"edge: {id} to : {t}")
+
+    def pagerank_using_random_walk(self):
+        x = random.choice(list(self.vert_list.keys())) #ovde je x samo str
+        rw_ranks = {}
+        for i in self.vert_list:
+            rw_ranks[i] = 0
+        rw_ranks[x] += 1
+
+        for i in range(10000):
+            temp = self.get_vertex(x) #ovde vraca None jer je x ovde vertex
+            list_neighbours = list(temp.get_outgoing())
+            if len(list_neighbours) == 0:
+                x = random.choice(list(self.vert_list.keys()))
+                rw_ranks[x] += 1
+            else:
+                x = random.choice(list_neighbours)
+                x = x.get_id()
+                rw_ranks[x] += 1
+
+        return rw_ranks
+
