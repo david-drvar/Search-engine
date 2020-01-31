@@ -1,10 +1,5 @@
-import os
-
-from my_set import MySet
-from graph import Graph
-from pyParser import Parser
-from trieTree import *
 from doc_search import *
+from graph import Graph
 from query_parser import *
 from my_set import  *
 
@@ -12,9 +7,14 @@ if __name__ == "__main__":
 
     directory = input('Enter the name of the directory you wish to search: ')
 
-    # graph = Graph()
-    # folder_search(directory, graph)
-    # graph.print()
+    graph = Graph()
+    folder_search(directory, graph)
+
+    graph.print()
+    rw_ranks = graph.pagerank_using_random_walk()
+    rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
+    print(rw_ranks)
+    print(rw_sorted)
 
     trie = Trie()
     fill_trie(directory, trie)

@@ -21,3 +21,8 @@ class Vertex:
 
     def get_weight(self, nbr):
         return self.outgoing[nbr]  # if it doesn't exist, it will return an error
+
+    def get_outgoing(self):
+        return self.outgoing
+
+
