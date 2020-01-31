@@ -3,7 +3,7 @@ from pyParser import Parser
 from trieTree import *
 
 
-def fill_trie(directory, trie):
+def fill_trie(directory, trie, graph):
     path = "python-2.7.7-docs-html"
     p = Parser()
     found = False
@@ -21,6 +21,10 @@ def fill_trie(directory, trie):
                 found = True
                 path = root + "\\" + file
                 links, words = p.parse(path)
+                for link in links:
+                    splits = link.split('\\')
+                    final_link = splits[len(splits) - 1]
+                    graph.add_edge(file, final_link, 1)
                 for word in words:
                     if word.lower() in cached_words:
                         cached_words[word.lower()].appearances += 1
@@ -32,28 +36,28 @@ def fill_trie(directory, trie):
     if not found:
         raise ValueError
 
-
-def folder_search(directory, graph):
-    start_path = "python-2.7.7-docs-html"  # current directory
-    p = Parser()
-
-    if directory != "":
-        start_path = start_path + "\\" + directory
-
-    for path, dirs, files in walk(start_path):
-        for file in files:
-            if file.__contains__('.html'):
-                graph.add_vertex(file)
-            # print (os.path.join(path, file))
-
-    # second pass is important because in the first one vertices are
-    # formed and in the second one edges
-    for path, dirs, files in walk(start_path):
-        for file in files:
-            if file.__contains__('.html'):
-                final_path = path + "\\" + file
-                (links, words) = p.parse(final_path)
-                for link in links:
-                    splits = link.split('\\')
-                    final_link = splits[len(splits) - 1]
-                    graph.add_edge(file, final_link, 1)  # watch out for situation when you only have vertices with incoming edges and no outgoing ( happens when you specify a start path )
+#
+# def folder_search(directory, graph):
+#     start_path = "python-2.7.7-docs-html"  # current directory
+#     p = Parser()
+#
+#     if directory != "":
+#         start_path = start_path + "\\" + directory
+#
+#     # for path, dirs, files in walk(start_path): # THIS IS MAYBE NOT NECESSARY because when you add_edge if vertex is not in the graph, it is added
+#     #     for file in files:
+#     #         if file.__contains__('.html'):
+#     #             graph.add_vertex(file)
+#     #         # print (os.path.join(path, file))
+#
+#     # second pass is important because in the first one vertices are
+#     # formed and in the second one edges
+#     for path, dirs, files in walk(start_path):
+#         for file in files:
+#             if file.__contains__('.html'):
+#                 final_path = path + "\\" + file
+#                 (links, words) = p.parse(final_path)
+#                 for link in links:
+#                     splits = link.split('\\')
+#                     final_link = splits[len(splits) - 1]
+#                     graph.add_edge(file, final_link, 1)  # watch out for situation when you only have vertices with incoming edges and no outgoing ( happens when you specify a start path )

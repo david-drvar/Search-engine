@@ -8,7 +8,14 @@ if __name__ == "__main__":
     directory = input('Enter the name of the directory you wish to search: ')
 
     graph = Graph()
-    folder_search(directory, graph)
+    trie = Trie()
+
+    try:
+        fill_trie(directory, trie, graph)
+    except ValueError:
+        print('File <%s> not found!' % directory)
+    # TODO if condition above isn't satisfied, do something to prevent code below from executing
+    # TODO merge parsing action for graph and trie
 
     graph.print()
     rw_ranks = graph.pagerank_using_random_walk()
@@ -16,14 +23,6 @@ if __name__ == "__main__":
     print(rw_ranks)
     print(rw_sorted)
 
-    trie = Trie()
-
-    try:
-        fill_trie(directory, trie)
-    except ValueError:
-        print('File <%s> not found!' % directory)
-    # TODO if condition above isn't satisfied, do something to prevent code below from executing
-    # TODO merge parsing action for graph and trie
     try:
         criteria = parse_query()
     except IndexError:

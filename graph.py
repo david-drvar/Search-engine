@@ -63,7 +63,7 @@ class Graph:
             rw_ranks[i] = 0
         rw_ranks[x] += 1
 
-        for i in range(10000):
+        for i in range(100000):
             temp = self.get_vertex(x) #ovde vraca None jer je x ovde vertex
             list_neighbours = list(temp.get_outgoing())
             if len(list_neighbours) == 0:
