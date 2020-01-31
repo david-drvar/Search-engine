@@ -17,8 +17,13 @@ if __name__ == "__main__":
     print(rw_sorted)
 
     trie = Trie()
-    fill_trie(directory, trie)
 
+    try:
+        fill_trie(directory, trie)
+    except ValueError:
+        print('File <%s> not found!' % directory)
+    # TODO if condition above isn't satisfied, do something to prevent code below from executing
+    # TODO merge parsing action for graph and trie
     try:
         criteria = parse_query()
     except IndexError:
@@ -46,22 +51,16 @@ if __name__ == "__main__":
     # trie.add_word('CANDY', "file 2")
     #
     # set1 = MySet()
-
-    #try:
-    # res = trie.search_trie('trie')
-    # for element in res:
-    #     set1.add(element)
-    # temp = FileInfo("file 55")
-    # temp.appearances = 9
-    # set1.add(temp)
-    # criteria = parse_query()
-    # result = execute_query(trie, criteria)
-    # print(len(result))
-    # for el in result:
-    #     print(str(el))
+    #
+    # print("RESULT:")
+    # try:
+    #     res = trie.search_trie('trie')
+    #     for el in res:
+    #         print(el)
     # except Exception:
     #     print('Not found')
-
+    # print("END")
+    #
     # trie.print_trie(trie.root)
 
 

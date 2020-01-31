@@ -23,7 +23,7 @@ def parse_query():
 
 def execute_query(trie, criteria):
     set_list = []
-    if criteria[1] in special_tokens:
+    if len(criteria) == 3 and criteria[1] in special_tokens:
         pass  # TODO unclear usage of the set operators
         # set1 = MySet()
         # files = trie.search_trie(criteria[0])

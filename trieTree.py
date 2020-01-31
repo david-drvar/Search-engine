@@ -20,7 +20,7 @@ class Trie:
     def __init__(self):
         self.root = TrieNode(-1)
 
-    def add_word(self, word, file):
+    def add_word(self, word, file_info):
         current = self.root
         for char in word:
             flag = False
@@ -43,11 +43,11 @@ class Trie:
         current.isEnd = True
 
         # checks if given file already exists and increments number of appearances of terminated word if it does
-        for i in range(0, len(current.files)):
-            if file == current.files[i].file:
-                current.files[i].appearances += 1
-                return
-        current.files.append(FileInfo(file))
+        # for i in range(0, len(current.files)):
+        #     if file == current.files[i].file:
+        #         current.files[i].appearances += 1
+        #         return
+        current.files.append(file_info)
 
     def search_trie(self, word):
         current = self.root                                # we start from the root

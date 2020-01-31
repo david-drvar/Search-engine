@@ -12,15 +12,25 @@ def fill_trie(directory, trie):
         path = path + "\\" + directory
 
     for root, dirs, files in walk(path):
+        print("ROOT", root)
+        print("DIRS:", dirs)
+        print("FILES", files)
         for file in files:
+            cached_words = {}
             if ".html" in file:
                 found = True
                 path = root + "\\" + file
                 links, words = p.parse(path)
                 for word in words:
-                    trie.add_word(word, file)
+                    if word.lower() in cached_words:
+                        cached_words[word.lower()].appearances += 1
+                        continue
+                    else:
+                        file_info = FileInfo(file)
+                        cached_words[word.lower()] = file_info
+                        trie.add_word(word, file_info)
     if not found:
-        print('There is not any html page in the specified directory')
+        raise ValueError
 
 
 def folder_search(directory, graph):
