@@ -49,6 +49,23 @@ class Trie:
                 return
         current.files.append(FileInfo(file))
 
+    def search_trie(self, word):
+        current = self.root                                # we start from the root
+        for char in word:                                  # for each character in the given word
+            found = False
+            for node in current.children:                  # look if there is any child node that matches the content
+                if char.lower() == node.char.lower():      # if there is
+                    current = node                         # that node's children we take for the next char match search
+                    found = True                           # and we raise the flag up
+                    break
+            if not found:                                  # if there isn't any node matching the char
+                raise Exception                            # we raise an exception
+                return
+        if current.isEnd:                          # have we reached the end of the word and current node is ending node
+            return current.files                   # we return the file info that node contained
+        else:                                      # in case the current node isn't an ending one
+            raise Exception                        # we raise an exception
+
     def print_trie(self, curr):         # just to check if I did it right TODO erase when done
         current = curr
         if len(current.children) == 0:

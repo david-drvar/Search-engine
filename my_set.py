@@ -3,15 +3,21 @@ class MySet:
     def __init__(self):
         self.my_set = {}
 
-    def add(self,element):
-        if id not in self.my_set: # constraint on repetitive keys
+    def create_generator(self):
+        for element in self.my_set:
+            yield element.file
+
+    def add(self, element):
+        # if element not in self.my_set:  # constraint on repetitive keys
+        generator = self.create_generator()
+        if element.file not in generator:
             self.my_set[element] = None
 
-    def discard(self,element): # doesn't raise KeyError if the element is not in the list
+    def discard(self, element):  # doesn't raise KeyError if the element is not in the list
         if element in self.my_set:
             del self.my_set[element]
 
-    def remove(self,element): # raises KeyError if it doesn't contain the element
+    def remove(self, element):  # raises KeyError if it doesn't contain the element
         if element in self.my_set:
             del self.my_set[element]
         else:
@@ -28,10 +34,12 @@ class MySet:
         return self.my_set.__len__()
 
     def __str__(self):
-        return list(self.my_set.keys()).__str__() # converting keys to list for a nicer print
+        return list(self.my_set.keys()).__str__()  # converting keys to list for a nicer print
 
     def __contains__(self, item):
-        return self.my_set.__contains__(item)
+        #return self.my_set.__contains__(item)
+        generator = self.create_generator()
+        return item.file in generator
 
     def union(self, other_set):
         if not isinstance(other_set, MySet):
