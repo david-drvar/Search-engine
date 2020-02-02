@@ -3,7 +3,7 @@ from pyParser import Parser
 from trieTree import *
 
 
-def fill_trie(directory, trie, graph):
+def fill_structures(directory, trie, graph):
     path = "python-2.7.7-docs-html"
     p = Parser()
     found = False
@@ -12,9 +12,6 @@ def fill_trie(directory, trie, graph):
         path = path + "\\" + directory
 
     for root, dirs, files in walk(path):
-        print("ROOT", root)
-        print("DIRS:", dirs)
-        print("FILES", files)
         for file in files:
             cached_words = {}
             if ".html" in file:
@@ -35,7 +32,6 @@ def fill_trie(directory, trie, graph):
                         trie.add_word(word, file_info)
     if not found:
         raise ValueError
-
 #
 # def folder_search(directory, graph):
 #     start_path = "python-2.7.7-docs-html"  # current directory
