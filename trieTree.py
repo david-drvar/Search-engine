@@ -75,3 +75,6 @@ class Trie:
             for el in child.files:
                 print(str(el))
             self.print_trie(child)
+
+    def clear_trie(self):
+        self.root.children.clear()

@@ -26,16 +26,17 @@ if __name__ == "__main__":
         if ans == '1':
             directory = input('Enter the name of the directory you wish to search: ')
             flag = True
+            trie.clear_trie()
             try:
                 fill_structures(directory, trie, graph)
             except ValueError:
                 print('Directory <%s> does not exist or there is no .html files' % directory)
 
-            graph.print()
+            # graph.print()
             rw_ranks = graph.pagerank_using_random_walk()
             rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
-            print(rw_ranks)
-            print(rw_sorted)
+            # print(rw_ranks)
+            # print(rw_sorted)
         elif ans == '2':
             if flag:
                 try:
@@ -45,12 +46,12 @@ if __name__ == "__main__":
                 except ValueError:
                     print('Special tokens AND, OR and NOT are not located at the right places. Try again!')
 
-                try:
-                    result_set = execute_query(trie, criteria)
-                    for el in result_set:
-                        print(str(el))
-                except Exception:
-                    print('Word not found')
+                # try:
+                result_set = execute_query(trie, criteria)
+                for el in result_set:
+                    print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+                # except Exception:
+                    # print('Word not found')
             else:
                 print('You need to enter directory name first')
         elif ans == '3':

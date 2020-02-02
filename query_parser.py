@@ -44,7 +44,7 @@ def execute_query(trie, criteria):
         for word in criteria:
             new_set = MySet()
             files = trie.search_trie(word)
-            for file in files:
-                new_set.add(file)
-            result = result.union(new_set)  # TODO Algorithm for handling the number of appearances still in progress
+            for file_info in files:
+                new_set.add(file_info.file, file_info.appearances)
+            result = result.union(new_set)
         return result
