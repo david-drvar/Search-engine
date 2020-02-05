@@ -18,6 +18,12 @@ def fill_structures(directory, trie, graph):
                 found = True
                 path = root + "\\" + file
                 links, words = p.parse(path)
+                print(file)
+                print('words: ')
+                print(len(words))
+                print('links: ')
+                print(len(links))
+                print('\n')
                 for link in links:
                     splits = link.split('\\')
                     final_link = splits[len(splits) - 1]
@@ -30,6 +36,7 @@ def fill_structures(directory, trie, graph):
                         file_info = FileInfo(file)
                         cached_words[word.lower()] = file_info
                         trie.add_word(word, file_info)
+
     if not found:
         raise ValueError
 #
