@@ -8,7 +8,7 @@ def print_menu():
     print('Choose one of the following options:')
     print('#1	Specify search directory')
     print('#2	Type & Search')
-    print('#3	Advances search options')
+    print('#3	Advanced search options')
     print('Q	Exit Search Engine Light')
 
 
@@ -46,12 +46,12 @@ if __name__ == "__main__":
                 except ValueError:
                     print('Special tokens AND, OR and NOT are not located at the right places. Try again!')
 
-                # try:
-                result_set = execute_query(trie, criteria)
-                for el in result_set:
-                    print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
-                # except Exception:
-                    # print('Word not found')
+                try:
+                    result_set = execute_query(trie, criteria)
+                    for el in result_set:
+                        print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+                except Exception:
+                    print('Word not found')
             else:
                 print('You need to enter directory name first')
         elif ans == '3':

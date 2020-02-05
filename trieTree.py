@@ -41,13 +41,8 @@ class Trie:
                     current = element
 
         current.isEnd = True
-
-        # checks if given file already exists and increments number of appearances of terminated word if it does
-        # for i in range(0, len(current.files)):
-        #     if file == current.files[i].file:
-        #         current.files[i].appearances += 1
-        #         return
         current.files.append(file_info)
+        # current.files = file_list
 
     def search_trie(self, word):
         current = self.root                                # we start from the root

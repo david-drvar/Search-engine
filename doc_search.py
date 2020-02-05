@@ -7,14 +7,39 @@ def fill_structures(directory, trie, graph):
     path = "python-2.7.7-docs-html"
     p = Parser()
     found = False
+    file_list = []
 
     if directory != "":
         path = path + "\\" + directory
 
+    # for root, dirs, files in walk(path):
+    #     for file in files:
+    #         if ".html" in file:
+    #             found = True
+    #             path = root + "\\" + file
+    #             links, words = p.parse(path)
+    #             for link in links:
+    #                 splits = link.split('\\')
+    #                 final_link = splits[len(splits) - 1]
+    #                 graph.add_edge(file, final_link, 1)
+    #             for word in words:
+    #                 if trie.search_trie(word, file_list):
+    #                     if file == file_list[-1].file:
+    #                         file_list[-1].appearances += 1
+    #                     else:
+    #                         file_list.append(FileInfo(file))
+    #                 else:
+    #                     file_list.clear()
+    #                     file_list.append(FileInfo(file))
+    #                     trie.add_word(word, file_list)
+    #
+    # if not found:
+    #     raise ValueError
+
     for root, dirs, files in walk(path):
         for file in files:
             cached_words = {}
-            if ".html" in file:
+            if "unicode.html" in file:
                 found = True
                 path = root + "\\" + file
                 links, words = p.parse(path)
