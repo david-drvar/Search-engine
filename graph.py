@@ -37,7 +37,7 @@ class Graph:
         if destination not in self.vert_list:
             self.add_vertex(destination)
 
-        self.vert_list[origin].add_neighbour(self.vert_list[destination], weight)
+        self.vert_list[origin].add_outgoing(self.vert_list[destination], weight)
         self.vert_list[destination].add_incoming(self.vert_list[origin], weight)
 
     def get_vertices(self):
@@ -56,23 +56,74 @@ class Graph:
             print(f"vertex: {id} | outgoing : {t1} \n                   incoming : {t2}")
             # print(f"edge: {id} to : {t}")
 
-    def pagerank_using_random_walk(self):
-        x = random.choice(list(self.vert_list.keys())) #ovde je x samo str
+    def fill_graph_with_words(self, result_set, criteria):
+        for word in criteria:
+            for file in result_set.keys():
+                # for vertex in self.vert_list:
+                #     if vertex == file:
+                #         temp = self.get_vertex(vertex)
+                #         temp.words_count[word] = result_set[file]
+                self.vert_list[file].words_count[word] = result_set[file]
+
+    def pagerank_using_random_walk(self, criteria):
+        x = random.choice(list(self.vert_list.keys()))  # here x is string
         rw_ranks = {}
         for i in self.vert_list:
             rw_ranks[i] = 0
-        rw_ranks[x] += 1
+
+        if len(self.vert_list[x].words_count) != 0:
+            for word in self.vert_list[x].words_count:
+                if len(self.vert_list[x].words_count) == len(criteria):  # if it contains all searched words, then we try to better rank it
+                    rw_ranks[x] += 3 * self.vert_list[x].words_count[word]
+                else:
+                    rw_ranks[x] += self.vert_list[x].words_count[word]
 
         for i in range(100000):
-            temp = self.get_vertex(x) #ovde vraca None jer je x ovde vertex
-            list_neighbours = list(temp.get_outgoing())
-            if len(list_neighbours) == 0:
+            temp = self.vert_list[x]
+            list_outgoing = list(temp.get_outgoing())
+            if len(list_outgoing) == 0:
                 x = random.choice(list(self.vert_list.keys()))
-                rw_ranks[x] += 1
+                if len(self.vert_list[x].words_count) != 0:
+                    for word in self.vert_list[x].words_count:
+                        if len(self.vert_list[x].words_count) == len(criteria):
+                            rw_ranks[x] += 3 * self.vert_list[x].words_count[word]
+                        else:
+                            rw_ranks[x] += self.vert_list[x].words_count[word]
+
+                if len(temp.words_count) != 0:  # na rang stranice utiče: broj traženih reči u stranicama koje sadrže link na traženu stranicu.
+                    for word in temp.words_count:
+                        if len(temp.words_count) == len(criteria):
+                            rw_ranks[x] += temp.words_count[word]
+                        else:
+                            rw_ranks[x] += 0.5 * temp.words_count[word]
             else:
-                x = random.choice(list_neighbours)
-                x = x.get_id()
-                rw_ranks[x] += 1
+                x = random.choice(list_outgoing)
+                c = x.get_weight(temp)  # number of edges has an impact on the final rank
+                x = x.get_id()  # making a string of it for the next iteration
+
+                if len(temp.words_count) != 0:  # na rang stranice utiče: broj traženih reči u stranicama koje sadrže link na traženu stranicu.
+                                                # Jedan link koji polazi od dokumenta koji i sam sadrži traženu reč bi trebalo da više utiče na rang od jedne pojave reči u dokumentu.
+                    for word in temp.words_count:
+                        if len(temp.words_count) == len(criteria):
+                            rw_ranks[x] += 4 * temp.words_count[word]
+                        else:
+                            rw_ranks[x] += 2 * temp.words_count[word]
+
+                if len(self.vert_list[x].words_count) != 0: # Jedan link koji polazi od dokumenta koji i sam sadrži traženu reč bi trebalo da više utiče na rang od jedne pojave reči u dokumentu.
+                    if len(temp.words_count) == len(criteria):
+                        rw_ranks[x] += 5 * c  # todo : should I completely exclude verteces not containing a single criteria word?
+                    elif len(temp.words_count) > 0:
+                        rw_ranks[x] += 3 * c
+                    else:
+                        rw_ranks[x] += c
+                    for word in self.vert_list[x].words_count:
+                        if len(self.vert_list[x].words_count) == len(criteria):
+                            rw_ranks[x] += 3 * self.vert_list[x].words_count[word]
+                        else:
+                            rw_ranks[x] += self.vert_list[x].words_count[word]
 
         return rw_ranks
 
+    def clear_words(self):
+        for vertex in self.vert_list:
+            self.vert_list[vertex].words_count.clear()

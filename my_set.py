@@ -9,6 +9,12 @@ class MySet:
         else:
             self.my_set[file] += appearances
 
+    def keys(self):  # next 3 methods enable iteration through set like dictionary
+         return self.my_set.keys()
+
+    def __getitem__(self, item):
+        return self.my_set[item]
+
     def discard(self, element):  # doesn't raise KeyError if the element is not in the list
         if element in self.my_set:
             del self.my_set[element]
