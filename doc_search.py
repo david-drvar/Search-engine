@@ -70,7 +70,6 @@ def fill_structures(directory, trie, graph):
     #     raise ValueError
 
     for file in file_list:
-        print(file)
         cached_words = {}
         found = True
         links, words = p.parse(file)

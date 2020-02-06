@@ -42,16 +42,16 @@ if __name__ == "__main__":
                     print('Special tokens AND, OR and NOT are not located at the right places. Try again!')
 
                 #try:
-                result_set = execute_query(trie, criteria)
-                graph.fill_graph_with_words(result_set, criteria)   # TODO David: Ovde javlja ako promenim da hocu da
-                                                                    # ispisujem celu putanju
-                rw_ranks = graph.pagerank_using_random_walk(criteria)
-                rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
-                print(rw_sorted)
-                graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
-
-                for el in result_set:
-                    print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+                # result_set = execute_query(trie, criteria)
+                # graph.fill_graph_with_words(result_set, criteria)   # TODO David: Ovde javlja ako promenim da hocu da
+                #                                                     # ispisujem celu putanju
+                # rw_ranks = graph.pagerank_using_random_walk(criteria)
+                # rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
+                # print(rw_sorted)
+                # graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
+                #
+                # for el in result_set:
+                #     print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
                 # except Exception:
                 #     print('Word not found')
             else:

@@ -6,7 +6,7 @@ special_tokens = ["AND", "OR", "NOT"]
 
 def parse_query():
     query = ""
-    found = False
+    found_special = False
     while query == "":
         query = input('Type the search criteria: ')
         criteria = query.split()
@@ -16,10 +16,20 @@ def parse_query():
         if criteria[i] in special_tokens:
             if len(criteria) != 3:
                 raise IndexError
-            if i != 1:
+            elif i != 1:
                 raise ValueError
-    return criteria
+            else:
+                found_special = True
 
+    # handles repetitive words by getting rid of them
+    if found_special and criteria[0] == criteria[2]:
+        del criteria[2]
+        del criteria[1]
+    else:
+        criteria = list(dict.fromkeys(criteria))
+
+    print(criteria)
+    return criteria
 
 def execute_query(trie, criteria):
     set_list = []
