@@ -38,11 +38,11 @@ class MySet:
     def __str__(self):
         return list(self.my_set.keys()).__str__()  # converting keys to list for a nicer print
 
-    def __contains__(self, item):
-        #return self.my_set.__contains__(item)
-        # generator = self.create_generator()
-        # return item.file in generator
-        return item.file in self.my_set
+    # def __contains__(self, item):
+    #     #return self.my_set.__contains__(item)
+    #     # generator = self.create_generator()
+    #     # return item.file in generator
+    #     return item.file in self.my_set
 
     def union(self, other_set):
         if not isinstance(other_set, MySet):
@@ -57,26 +57,49 @@ class MySet:
         if not isinstance(other_set, MySet):
             raise ValueError("argument for intersection should be of type 'MySet' ")
 
-        result = MySet()
+        # result = MySet()
+        #
+        # for element in other_set:
+        #     if self.my_set.__contains__(element):
+        #         result.add(element)
+        #
+        # return result
 
-        for element in other_set:
-            if self.my_set.__contains__(element):       # TODO DAVID: Make it compatible with the new logic
-                result.add(element)
+        to_be_removed = []
 
-        return result
+        for file in self.my_set:
+            if file in other_set:
+                self.add(file, other_set.my_set[file])
+            else:
+                to_be_removed.append(file)
+
+        for file in to_be_removed:
+            self.remove(file)
+
+        return self
 
     def difference(self, other_set):
+        pass
         if not isinstance(other_set, MySet):
             raise ValueError("argument for intersection should be of type 'MySet' ")
 
-        result = MySet()
+        # result = MySet()
+        #
+        # for element in self.my_set:
+        #     if not other_set.__contains__(element):
+        #         result.add(element)
+        #
+        # return result
 
-        for element in self.my_set:                         # TODO DAVID: Make it compatible with the new logic
-            if not other_set.__contains__(element):
-                result.add(element)
+        to_be_removed = []
 
-        return result
+        for file in self.my_set:
+            if file in other_set:
+                to_be_removed.append(file)
 
+        for file in to_be_removed:
+            self.remove(file)
+        return self
 
 
 
