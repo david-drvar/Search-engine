@@ -75,7 +75,15 @@ def fill_structures(directory, trie, graph):
         links, words = p.parse(file)
         for link in links:
             splits = link.split('\\')
-            final_link = splits[len(splits) - 1]
+            index = 0
+            for string in splits:
+                if string == 'python-2.7.7-docs-html':
+                    break
+                else:
+                    index += 1
+            final_link = '\\'.join(splits[index:])
+
+            # final_link = splits[len(splits) - 1]
             graph.add_edge(file, final_link, 1)
         for word in words:
             if word.lower() in cached_words:
