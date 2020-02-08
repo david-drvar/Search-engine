@@ -48,11 +48,15 @@ if __name__ == "__main__":
                                                                         # ispisujem celu putanju
                     rw_ranks = graph.pagerank_using_random_walk(criteria)
                     rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
+
                     # print(rw_sorted)
                     graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
-                    pagination(rw_sorted)
+                    # print(len(result_set))
                     # for el in result_set:
                     #     print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+
+                    pagination(rw_sorted)
+
                 except Exception:
                     print('Word not found')
             else:

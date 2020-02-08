@@ -69,7 +69,8 @@ class Graph:
         x = random.choice(list(self.vert_list.keys()))  # here x is string
         rw_ranks = {}
         for i in self.vert_list:
-            rw_ranks[i] = 0
+            if len(self.vert_list[i].words_count) != 0:
+                rw_ranks[i] = 0
 
         if len(self.vert_list[x].words_count) != 0:
             for word in self.vert_list[x].words_count:
@@ -102,7 +103,7 @@ class Graph:
                 c = x.get_weight(temp)  # number of edges has an impact on the final rank
                 x = x.get_id()  # making a string of it for the next iteration
 
-                if len(temp.words_count) != 0:  # na rang stranice utiče: broj traženih reči u stranicama koje sadrže link na traženu stranicu.
+                if len(temp.words_count) != 0 and len(self.vert_list[x].words_count) != 0:  # na rang stranice utiče: broj traženih reči u stranicama koje sadrže link na traženu stranicu.
                                                 # Jedan link koji polazi od dokumenta koji i sam sadrži traženu reč bi trebalo da više utiče na rang od jedne pojave reči u dokumentu.
                     for word in temp.words_count:
                         if len(temp.words_count) == len(criteria):
@@ -111,12 +112,13 @@ class Graph:
                             rw_ranks[x] += 1.25 * temp.words_count[word]
 
                 # Jedan link koji polazi od dokumenta koji i sam sadrži traženu reč bi trebalo da više utiče na rang od jedne pojave reči u dokumentu.
-                if len(temp.words_count) == len(criteria):
-                    rw_ranks[x] += 2 * c
-                elif len(temp.words_count) > 0:
-                    rw_ranks[x] += 1.75 * c
-                else:
-                    rw_ranks[x] += c
+                if len(self.vert_list[x].words_count) != 0:
+                    if len(temp.words_count) == len(criteria):
+                        rw_ranks[x] += 2 * c
+                    elif len(temp.words_count) > 0:
+                        rw_ranks[x] += 1.75 * c
+                    else:
+                        rw_ranks[x] += c
 
                 for word in self.vert_list[x].words_count:
                     if len(self.vert_list[x].words_count) == len(criteria):
