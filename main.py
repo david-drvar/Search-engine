@@ -1,7 +1,15 @@
 from doc_search import *
 from graph import Graph
+from pagination import pagination
 from query_parser import *
 from my_set import *
+
+# todo: heapsort rangova - ubacis putanju i rang
+# todo: paginacija - kada promenis velicinu stranice onda krece ispocetka prikaz rezultata, ULEPSATI ispis, bez ()
+# todo: rangirana pretraga - MNOGO jednostavnije, fokusiraj se na formulu, uvek mora biti isti rezultat
+# todo: search directory - preko APSOLUTNE, mozes staviti i file i folder, pushovati test skup, program slashuje kada ukucam random naziv
+# todo: objasni sve u readME!
+
 
 
 def print_menu():
@@ -50,14 +58,19 @@ if __name__ == "__main__":
 
                 try:
                     result_set = execute_query(trie, criteria)
-                    graph.fill_graph_with_words(result_set, criteria)
+                    graph.fill_graph_with_words(result_set, criteria)   # TODO David: Ovde javlja ako promenim da hocu da
+                                                                        # ispisujem celu putanju
                     rw_ranks = graph.pagerank_using_random_walk(criteria)
                     rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
-                    print(rw_sorted)
-                    graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
 
-                    for el in result_set:
-                        print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+                    # print(rw_sorted)
+                    graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
+                    # print(len(result_set))
+                    # for el in result_set:
+                    #     print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+
+                    pagination(rw_sorted)
+
                 except Exception:
                     print('Word not found')
             else:
