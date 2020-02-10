@@ -4,6 +4,13 @@ from pagination import pagination
 from query_parser import *
 from my_set import *
 
+# todo: heapsort rangova - ubacis putanju i rang
+# todo: paginacija - kada promenis velicinu stranice onda krece ispocetka prikaz rezultata, ULEPSATI ispis, bez ()
+# todo: rangirana pretraga - MNOGO jednostavnije, fokusiraj se na formulu, uvek mora biti isti rezultat
+# todo: search directory - preko APSOLUTNE, mozes staviti i file i folder, pushovati test skup, program slashuje kada ukucam random naziv
+# todo: objasni sve u readME!
+
+
 
 def print_menu():
     print('Choose one of the following options:')
