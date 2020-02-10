@@ -1,7 +1,7 @@
 from my_set import *
 from trieTree import *
 
-special_tokens = ["AND", "OR", "NOT"]
+special_tokens = ["AND", "OR", "NOT", "and", "or", "not"]
 
 
 def parse_query():
@@ -32,9 +32,7 @@ def parse_query():
 
 def execute_query(trie, criteria):
     set_list = []
-    #if len(criteria) == 3 and criteria[1] in special_tokens:
     if any(token in criteria for token in special_tokens):
-        print("We're in!")
         set1 = MySet()
         files = trie.search_trie(criteria[0])
         for file_info in files:
@@ -43,9 +41,9 @@ def execute_query(trie, criteria):
         files = trie.search_trie(criteria[2])
         for file_info in files:
             set2.add(file_info.file, file_info.appearances)
-        if criteria[1] == "AND":
+        if criteria[1].upper() == "AND":
             return set1.intersection(set2)
-        elif criteria[2] == "OR":
+        elif criteria[1].upper() == "OR":
             return set1.union(set2)
         else:
             return set1.difference(set2)

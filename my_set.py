@@ -38,12 +38,6 @@ class MySet:
     def __str__(self):
         return list(self.my_set.keys()).__str__()  # converting keys to list for a nicer print
 
-    # def __contains__(self, item):
-    #     #return self.my_set.__contains__(item)
-    #     # generator = self.create_generator()
-    #     # return item.file in generator
-    #     return item.file in self.my_set
-
     def union(self, other_set):
         if not isinstance(other_set, MySet):
             raise ValueError("argument for union should be of type 'MySet' ")
@@ -56,14 +50,6 @@ class MySet:
     def intersection(self, other_set):
         if not isinstance(other_set, MySet):
             raise ValueError("argument for intersection should be of type 'MySet' ")
-
-        # result = MySet()
-        #
-        # for element in other_set:
-        #     if self.my_set.__contains__(element):
-        #         result.add(element)
-        #
-        # return result
 
         to_be_removed = []
 
@@ -82,14 +68,6 @@ class MySet:
         pass
         if not isinstance(other_set, MySet):
             raise ValueError("argument for intersection should be of type 'MySet' ")
-
-        # result = MySet()
-        #
-        # for element in self.my_set:
-        #     if not other_set.__contains__(element):
-        #         result.add(element)
-        #
-        # return result
 
         to_be_removed = []
 

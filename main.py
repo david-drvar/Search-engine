@@ -16,6 +16,8 @@ if __name__ == "__main__":
 
     stop = False
     flag = False
+    # path = ""
+    path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
     graph = Graph()
     trie = Trie()
 
@@ -24,13 +26,18 @@ if __name__ == "__main__":
         ans = input('>> ')
 
         if ans == '1':
-            directory = input('Enter the name of the directory you wish to search: ')
+            while path == "":
+                path = input('Enter the name of the directory you wish to search: ')
             flag = True
             trie.clear_trie()
             try:
-                fill_structures(directory, trie, graph)
+                fill_structures(path, trie, graph)
             except ValueError:
-                print('Directory <%s> does not exist or does not contain any .html file' % directory)
+                print('Directory <%s> does not exist or does not contain any .html file' % path)
+            except FileNotFoundError:
+                print('File or directory on path <%s> does not exist' % path)
+            except PermissionError:
+                print("You don't have a permission to access all files")
 
         elif ans == '2':
             if flag:
@@ -41,19 +48,18 @@ if __name__ == "__main__":
                 except ValueError:
                     print('Special tokens AND, OR and NOT are not located at the right places. Try again!')
 
-                #try:
-                result_set = execute_query(trie, criteria)
-                graph.fill_graph_with_words(result_set, criteria)   # TODO David: Ovde javlja ako promenim da hocu da
-                                                                    # ispisujem celu putanju
-                rw_ranks = graph.pagerank_using_random_walk(criteria)
-                rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
-                print(rw_sorted)
-                graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
+                try:
+                    result_set = execute_query(trie, criteria)
+                    graph.fill_graph_with_words(result_set, criteria)
+                    rw_ranks = graph.pagerank_using_random_walk(criteria)
+                    rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
+                    print(rw_sorted)
+                    graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
 
-                for el in result_set:
-                    print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
-                # except Exception:
-                #     print('Word not found')
+                    for el in result_set:
+                        print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+                except Exception:
+                    print('Word not found')
             else:
                 print('You need to enter directory name first')
         elif ans == '3':
@@ -62,28 +68,3 @@ if __name__ == "__main__":
             stop = True
         else:
             print('Wrong input argument')
-
-    # Testing algorithms on problems of the smaller scale
-    # trie = Trie()
-    # trie.add_word('CAT', "file 1")
-    # trie.add_word('DO', "file 1")
-    # trie.add_word('TRY', "file 2")
-    # trie.add_word('TRIE', "file 2")
-    # trie.add_word('TRIE', "file 1")
-    # trie.add_word('DONE', "file 1")
-    # trie.add_word('DO', "file 2")
-    # trie.add_word('TRIE', "file 2")
-    # trie.add_word('CANDY', "file 2")
-    #
-    # set1 = MySet()
-    #
-    # print("RESULT:")
-    # try:
-    #     res = trie.search_trie('trie')
-    #     for el in res:
-    #         print(el)
-    # except Exception:
-    #     print('Not found')
-    # print("END")
-    #
-    # trie.print_trie(trie.root)
