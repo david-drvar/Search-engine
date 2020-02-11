@@ -1,3 +1,4 @@
+# TODO David: Kada je result set prazan upadne u beskonacnu petlju sa pitanjem 'Enter numbers in range of 0 to 0'
 def pagination(result_set):
     while True:
         try:

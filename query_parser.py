@@ -1,6 +1,6 @@
 from my_set import *
 from trieTree import *
-from re import match
+from doc_search import tree_traversal
 
 special_tokens = ["AND", "OR", "NOT", "and", "or", "not"]
 
@@ -18,14 +18,13 @@ def parse_query():
             raise IndexError
         elif criteria[1] in special_tokens:
             raise ValueError
-    else:
-        if any(token in criteria for token in special_tokens):
-            if len(criteria) != 3:
-                raise IndexError
-            elif criteria[0] in special_tokens or criteria[2] in special_tokens:
-                raise ValueError
-            else:
-                found_special = True
+    elif any(token in criteria for token in special_tokens):
+        if len(criteria) != 3:
+            raise IndexError
+        elif criteria[0] in special_tokens or criteria[2] in special_tokens:
+            raise ValueError
+        else:
+            found_special = True
 
     # handles repetitive words by getting rid of them
     if found_special and criteria[0] == criteria[2]:
@@ -36,20 +35,37 @@ def parse_query():
             del criteria[1]
     else:
         criteria = list(dict.fromkeys(criteria))
-    print(criteria)
+
     return criteria
 
-def execute_query(trie, criteria):
+
+def execute_query(trie, criteria, path):
     set_list = []
-    if any(token in criteria for token in special_tokens):
+    if criteria[0].lower() == "not":
+        set1 = MySet()
+        files = []
+        tree_traversal(path, files)
+        for file in files:
+            set1.add(file, 0)
+
+        set2 = MySet()
+        files = trie.search_trie(criteria[1])
+        for file_info in files:
+            set2.add(file_info.file, file_info.appearances)
+
+        return set1.difference(set2)
+
+    elif any(token in criteria for token in special_tokens):
         set1 = MySet()
         files = trie.search_trie(criteria[0])
         for file_info in files:
             set1.add(file_info.file, file_info.appearances)
+
         set2 = MySet()
         files = trie.search_trie(criteria[2])
         for file_info in files:
             set2.add(file_info.file, file_info.appearances)
+
         if criteria[1].upper() == "AND":
             return set1.intersection(set2)
         elif criteria[1].upper() == "OR":

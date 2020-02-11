@@ -10,7 +10,7 @@ class MySet:
             self.my_set[file] += appearances
 
     def keys(self):  # next 3 methods enable iteration through set like dictionary
-         return self.my_set.keys()
+        return self.my_set.keys()
 
     def __getitem__(self, item):
         return self.my_set[item]
@@ -33,7 +33,7 @@ class MySet:
             yield element
 
     def __len__(self):
-        return self.my_set.__len__()
+        return len(self.my_set)
 
     def __str__(self):
         return list(self.my_set.keys()).__str__()  # converting keys to list for a nicer print

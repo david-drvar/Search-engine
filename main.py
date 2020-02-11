@@ -3,13 +3,13 @@ from graph import Graph
 from pagination import pagination
 from query_parser import *
 from my_set import *
+from time import time
+from colors import Colors
 
 # todo: heapsort rangova - ubacis putanju i rang
 # todo: paginacija - kada promenis velicinu stranice onda krece ispocetka prikaz rezultata, ULEPSATI ispis, bez ()
 # todo: rangirana pretraga - MNOGO jednostavnije, fokusiraj se na formulu, uvek mora biti isti rezultat
-# todo: search directory - preko APSOLUTNE, mozes staviti i file i folder, pushovati test skup, program slashuje kada ukucam random naziv
 # todo: objasni sve u readME!
-
 
 
 def print_menu():
@@ -24,14 +24,14 @@ if __name__ == "__main__":
 
     stop = False
     flag = False
-    # path = ""
-    path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
+    path = ""
+    # path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
     graph = Graph()
     trie = Trie()
 
     while not stop:
         print_menu()
-        ans = input('>> ')
+        ans = input(Colors.FG.red + '>> ')
 
         if ans == '1':
             while path == "":
@@ -39,45 +39,55 @@ if __name__ == "__main__":
             flag = True
             trie.clear_trie()
             try:
+                start_time = time()
                 fill_structures(path, trie, graph)
+                elapsed_time = time() - start_time
+                print(Colors.FG.blue + "Process finished in %.2f second(s)" % elapsed_time + Colors.reset)
             except ValueError:
-                print('Directory <%s> does not exist or does not contain any .html file' % path)
+                print(Colors.FG.yellow + 'Directory <%s> does not exist or does not contain any .html file' % path +
+                      Colors.reset)
             except FileNotFoundError:
-                print('File or directory on path <%s> does not exist' % path)
+                print(Colors.FG.yellow + 'File or directory on path <%s> does not exist' % path +
+                      Colors.reset)
             except PermissionError:
-                print("You don't have a permission to access all files")
+                print(Colors.FG.yellow + "You don't have a permission to access all files" + Colors.reset)
 
         elif ans == '2':
             if flag:
                 try:
                     criteria = parse_query()
                 except IndexError:
-                    print('Too many or too few arguments entered.')
+                    print(Colors.FG.yellow + 'Too many or too few arguments entered.' + Colors.reset)
                 except ValueError:
-                    print('Special tokens AND, OR and NOT are not located at the right places. Try again!')
+                    print(Colors.FG.yellow +
+                          'Special tokens AND, OR and NOT are not located at the right places. Try again!' +
+                          Colors.reset)
 
-                # try:
-                #     result_set = execute_query(trie, criteria)
-                #     graph.fill_graph_with_words(result_set, criteria)   # TODO David: Ovde javlja ako promenim da hocu da
-                #                                                         # ispisujem celu putanju
-                #     rw_ranks = graph.pagerank_using_random_walk(criteria)
-                #     rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
-                #
-                #     # print(rw_sorted)
-                #     graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
-                #     # print(len(result_set))
-                #     # for el in result_set:
-                #     #     print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
-                #
-                #     pagination(rw_sorted)
-                #
-                # except Exception:
-                #     print('Word not found')
+                try:
+                    start_time = time()
+                    result_set = execute_query(trie, criteria, path)
+                    graph.fill_graph_with_words(result_set, criteria)
+                    rw_ranks = graph.pagerank_using_random_walk(criteria)
+                    rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
+
+                    # print(rw_sorted)
+                    graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
+                    # print(len(result_set))
+                    # for el in result_set:
+                    #     print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+
+                    elapsed_time = time() - start_time
+                    print(Colors.FG.blue + "Found %d result(s) in %.2f second(s)" % (len(result_set), elapsed_time) +
+                          Colors.reset)
+                    pagination(rw_sorted)
+
+                except Exception:
+                    print(Colors.FG.yellow + 'Word not found' + Colors.reset)
             else:
-                print('You need to enter directory name first')
+                print(Colors.FG.yellow + 'You need to enter directory name first' + Colors.reset)
         elif ans == '3':
             pass
         elif ans == 'Q':
             stop = True
         else:
-            print('Wrong input argument')
+            print(Colors.FG.yellow + 'Wrong input argument' + Colors.reset)
