@@ -1,5 +1,6 @@
 from my_set import *
 from trieTree import *
+from re import match
 
 special_tokens = ["AND", "OR", "NOT", "and", "or", "not"]
 
@@ -7,28 +8,36 @@ special_tokens = ["AND", "OR", "NOT", "and", "or", "not"]
 def parse_query():
     query = ""
     found_special = False
+    found_not = False
     while query == "":
         query = input('Type the search criteria: ')
         criteria = query.split()
 
-    # checks if the correct way of defining criteria is followed
-    for i in range(0, len(criteria)):
-        if criteria[i] in special_tokens:
+    if criteria[0].lower() == "not":
+        if len(criteria) != 2:
+            raise IndexError
+        elif criteria[1] in special_tokens:
+            raise ValueError
+    else:
+        if any(token in criteria for token in special_tokens):
             if len(criteria) != 3:
                 raise IndexError
-            elif i != 1:
+            elif criteria[0] in special_tokens or criteria[2] in special_tokens:
                 raise ValueError
             else:
                 found_special = True
 
     # handles repetitive words by getting rid of them
     if found_special and criteria[0] == criteria[2]:
-        del criteria[2]
-        del criteria[1]
+        if criteria[1].lower() == "not":
+            criteria.clear()
+        else:
+            del criteria[2]
+            del criteria[1]
     else:
         criteria = list(dict.fromkeys(criteria))
+    print(criteria)
     return criteria
-
 
 def execute_query(trie, criteria):
     set_list = []
