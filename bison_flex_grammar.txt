@@ -1,11 +1,11 @@
-OrExpression
-  : ExtendedOr
-  | OrExpression '||' AndExpression
+ExtendedOr
+  : OrExpression
+  | ExtendedOr OrExpression
   ;
 
-ExtendedOr
+OrExpression
   : AndExpression
-  | ExtendedOr AndExpression
+  | OrExpression '||' AndExpression
   ;
 
 AndExpression

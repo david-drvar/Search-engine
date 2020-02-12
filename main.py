@@ -26,7 +26,7 @@ if __name__ == "__main__":
     stop = False
     flag = False
     path = ""
-    # path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
+    path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
     graph = Graph()
     trie = Trie()
 
@@ -35,7 +35,7 @@ if __name__ == "__main__":
         ans = input(Colors.FG.red + '>> ' + Colors.reset)
 
         if ans == '1':
-            path = ""
+            # path = ""
             while path == "":
                 path = input('Enter the name of the directory you wish to search: ')
             flag = True
