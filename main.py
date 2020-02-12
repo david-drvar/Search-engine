@@ -5,6 +5,7 @@ from query_parser import *
 from my_set import *
 from time import time
 from colors import Colors
+from advanced_parsing import make_ir
 
 # todo: heapsort rangova - ubacis putanju i rang
 # todo: paginacija - kada promenis velicinu stranice onda krece ispocetka prikaz rezultata, ULEPSATI ispis, bez ()
@@ -31,9 +32,10 @@ if __name__ == "__main__":
 
     while not stop:
         print_menu()
-        ans = input(Colors.FG.red + '>> ')
+        ans = input(Colors.FG.red + '>> ' + Colors.reset)
 
         if ans == '1':
+            path = ""
             while path == "":
                 path = input('Enter the name of the directory you wish to search: ')
             flag = True
@@ -86,7 +88,13 @@ if __name__ == "__main__":
             else:
                 print(Colors.FG.yellow + 'You need to enter directory name first' + Colors.reset)
         elif ans == '3':
-            pass
+            query = ""
+            while query == "":
+                query = input("Enter search criterion (use &&, ||, ! operators or blank space): ")
+            try:
+                make_ir(query)
+            except Exception:
+                print(Colors.FG.yellow + "Search criterion defined incorrectly" + Colors.reset)
         elif ans == 'Q':
             stop = True
         else:

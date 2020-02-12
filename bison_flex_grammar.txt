@@ -1,0 +1,29 @@
+OrExpression
+  : ExtendedOr
+  | OrExpression '||' AndExpression
+  ;
+
+ExtendedOr
+  : AndExpression
+  | ExtendedOr AndExpression
+  ;
+
+AndExpression
+  : NoExpression
+  | AndExpression '&&' NoExpression
+  ;
+
+NoExpression
+  : SimpleExpression
+  | '!' SimpleExpression
+  ;
+
+SimpleExpression
+  : WORD
+  | '(' OrExpression ')'
+  ;
+
+terminals
+WORD
+  : /\w+/
+  ;
