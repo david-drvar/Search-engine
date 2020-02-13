@@ -79,7 +79,7 @@ class Graph:
                 else:
                     rw_ranks[x] += self.vert_list[x].words_count[word]
 
-        for i in range(1000000):
+        for i in range(1000):
             temp = self.vert_list[x]
             list_outgoing = list(temp.get_outgoing())
             if len(list_outgoing) == 0:
@@ -127,6 +127,24 @@ class Graph:
                         rw_ranks[x] += self.vert_list[x].words_count[word]
 
         return rw_ranks
+
+    def pagerank(self, result_set):
+        final_ranks = {}
+        # bolje rangiranje rezultata u kojima se pojavljuju sve reči je postignuto sabiranjem broja pojavljivanja svake reci prilikom unije i preseka
+        for key in result_set.keys():
+            vertex = self.vert_list[key]
+            occurences_of_words_in_incoming_verteces = 0
+            occurences_of_words_in_vertex = result_set[key]
+            number_of_incoming_edges = 0
+            for incoming_vertex in vertex.incoming:
+                if incoming_vertex.id in result_set.keys():
+                    occurences_of_words_in_incoming_verteces += result_set[incoming_vertex.id]
+                    number_of_incoming_edges += 3 #link koji polazi od dokumenta koji i sam sadrži traženu reč više utiče na rang od jedne pojave reči u dokumentu
+                else:
+                    number_of_incoming_edges += 1
+            final_ranks[key] = occurences_of_words_in_vertex + round(0.7*number_of_incoming_edges) + round(0.9* occurences_of_words_in_incoming_verteces) #formula za izracunavanje ranka
+
+        return final_ranks
 
     def clear_words(self):
         for vertex in self.vert_list:
