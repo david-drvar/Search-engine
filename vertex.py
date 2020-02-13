@@ -1,18 +1,18 @@
 class Vertex:
     def __init__(self, key):
         self.words_count = {}
-        self.id = key # TODO: DAVID : IMPORTANT! make key a RELATIVE ADDRESS, not a filename
+        self.id = key  # TODO: DAVID : IMPORTANT! make key a RELATIVE ADDRESS, not a filename
         self.outgoing = {}  # key is vertex object, value is weight      # todo: if there are more links than there should be more edges?
-        self.incoming = {} # these are empty dictionaries!
+        self.incoming = {}  # these are empty dictionaries!
 
     def add_outgoing(self, nbr, weight=None):
-        if nbr in self.outgoing: # there are more than 1 links between documents
+        if nbr in self.outgoing:  # there are more than 1 links between documents
             old_weight = self.outgoing[nbr]
             self.outgoing[nbr] = old_weight + 1
         else:
             self.outgoing[nbr] = weight
 
-    def add_word_count(self,word,count):
+    def add_word_count(self, word, count):
         self.words_count[word] = count
 
     def add_incoming(self, nbr, weight=None):
@@ -36,5 +36,3 @@ class Vertex:
 
     def get_outgoing(self):
         return self.outgoing
-
-

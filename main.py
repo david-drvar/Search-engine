@@ -7,9 +7,8 @@ from time import time
 from colors import Colors
 from advanced_parsing import make_ir
 
+
 # todo: heapsort rangova - ubacis putanju i rang
-# todo: paginacija - kada promenis velicinu stranice onda krece ispocetka prikaz rezultata, ULEPSATI ispis, bez ()
-# todo: rangirana pretraga - MNOGO jednostavnije, fokusiraj se na formulu, uvek mora biti isti rezultat
 # todo: objasni sve u readME!
 
 
@@ -26,7 +25,9 @@ if __name__ == "__main__":
     stop = False
     flag = False
     path = ""
-    path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
+    # Ilijin : C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api
+    # todo: change this for release version
+    path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html"
     graph = Graph()
     trie = Trie()
 
@@ -45,6 +46,7 @@ if __name__ == "__main__":
                 fill_structures(path, trie, graph)
                 elapsed_time = time() - start_time
                 print(Colors.FG.blue + "Process finished in %.2f second(s)" % elapsed_time + Colors.reset)
+
             except ValueError:
                 print(Colors.FG.yellow + 'Directory <%s> does not exist or does not contain any .html file' % path +
                       Colors.reset)
@@ -56,32 +58,41 @@ if __name__ == "__main__":
 
         elif ans == '2':
             if flag:
+                error = 0
                 try:
                     criteria = parse_query()
                 except IndexError:
                     print(Colors.FG.yellow + 'Too many or too few arguments entered.' + Colors.reset)
+                    error = 1
                 except ValueError:
                     print(Colors.FG.yellow +
                           'Special tokens AND, OR and NOT are not located at the right places. Try again!' +
                           Colors.reset)
+                    error = 1
 
                 try:
-                    start_time = time()
-                    result_set = execute_query(trie, criteria, path)
-                    graph.fill_graph_with_words(result_set, criteria)
-                    rw_ranks = graph.pagerank_using_random_walk(criteria)
-                    rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
+                    if error == 0:  # if exception happens this doesn't run
+                        start_time = time()
+                        result_set = execute_query(trie, criteria, path)
+                        # graph.fill_graph_with_words(result_set, criteria)
+                        # rw_ranks = graph.pagerank_using_random_walk(criteria)
+                        # rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
 
-                    # print(rw_sorted)
-                    graph.clear_words() # dictionary in vertex is cleared so that the next search result is correct
-                    # print(len(result_set))
-                    # for el in result_set:
-                    #     print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+                        ranks = graph.pagerank(result_set)
+                        ranks = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
 
-                    elapsed_time = time() - start_time
-                    print(Colors.FG.blue + "Found %d result(s) in %.2f second(s)" % (len(result_set), elapsed_time) +
-                          Colors.reset)
-                    pagination(rw_sorted)
+                        # print(rw_sorted)
+                        # graph.clear_words()  # dictionary in vertex is cleared so that the next search result is correct
+                        # print(len(result_set))
+                        # for el in result_set:
+                        #     print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+
+                        elapsed_time = time() - start_time
+                        print(
+                            Colors.FG.blue + "Found %d result(s) in %.2f second(s)" % (len(result_set), elapsed_time) +
+                            Colors.reset)
+                        pagination(ranks)
+
                 except Exception:
                     print(Colors.FG.yellow + 'Word not found' + Colors.reset)
             else:
