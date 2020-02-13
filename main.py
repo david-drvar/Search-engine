@@ -82,7 +82,6 @@ if __name__ == "__main__":
                     print(Colors.FG.blue + "Found %d result(s) in %.2f second(s)" % (len(result_set), elapsed_time) +
                           Colors.reset)
                     pagination(rw_sorted)
-
                 except Exception:
                     print(Colors.FG.yellow + 'Word not found' + Colors.reset)
             else:

@@ -41,6 +41,9 @@ def parse_query():
 
 def execute_query(trie, criteria, path):
     set_list = []
+    if not len(criteria):
+        return MySet()
+
     if criteria[0].lower() == "not":
         set1 = MySet()
         files = []
