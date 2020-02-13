@@ -31,12 +31,22 @@ def pagination(result_set):
             "Enter A for the previous page, D for the next page and X for changing the page length, Q for exit:  ")
         if char == 'X':
             while True:
-                page_length = int(input("Enter the page length:  "))
+                try:
+                    page_length = int(input("Enter the page length:  "))
 
-                if page_length <= 0:
-                    print("Page length must be greater than 0")
-                else:
-                    break
+                    if page_length <= 0 or page_length> len(result_set):
+                        raise Exception
+                    else:
+                        index = 0
+                        printable = result_set[index:page_length]
+                        print()
+                        if printable:
+                            for element in printable:
+                                print(element)
+                        index = page_length
+                        break
+                except:
+                    print("Enter only numbers in range of 0 to ", len(result_set))
         elif char == 'A':
             tmp = index
             index = index - 2 * page_length
