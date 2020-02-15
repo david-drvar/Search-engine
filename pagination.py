@@ -22,7 +22,7 @@ def pagination(result_set):
         print()
         if printable:
             for (key, value) in printable:
-                line_new = '{:<150}   {:>15}'.format(key,value)
+                line_new = '{:<150}   {:>15}'.format(value,key)
                 print(line_new)
 
         index = page_length
@@ -44,7 +44,7 @@ def pagination(result_set):
                             print()
                             if printable:
                                 for (key,value) in printable:
-                                    line_new = '{:<150}   {:>15}'.format(key, value)
+                                    line_new = '{:<150}   {:>15}'.format(value,key)
                                     print(line_new)
                             index = page_length
                             break
@@ -57,7 +57,7 @@ def pagination(result_set):
                 printable = result_set[index: index + page_length]
                 if printable:
                     for (key, value) in printable:
-                        line_new = '{:<150}   {:>15}'.format(key, value)
+                        line_new = '{:<150}   {:>15}'.format(value,key)
                         print(line_new)
                     index = index + page_length
                 else:
@@ -70,7 +70,7 @@ def pagination(result_set):
                 print()
                 if printable:
                     for (key, value) in printable:
-                        line_new = '{:<150}   {:>15}'.format(key, value)
+                        line_new = '{:<150}   {:>15}'.format(value,key)
                         print(line_new)
                     index = index + page_length
                 else:

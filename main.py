@@ -1,16 +1,15 @@
+from time import time
+
+from advanced_parsing import make_ir
+from colors import Colors
 from doc_search import *
 from graph import Graph
+from max_heap import MaxHeap
 from pagination import pagination
 from query_parser import *
-from my_set import *
-from time import time
-from colors import Colors
-from advanced_parsing import make_ir
 
 
-# todo: heapsort rangova - ubacis putanju i rang
 # todo: objasni sve u readME!
-
 
 def print_menu():
     print('Choose one of the following options:')
@@ -39,6 +38,7 @@ if __name__ == "__main__":
             # path = ""
             while path == "":
                 path = input('Enter the name of the directory you wish to search: ')
+            print('Processing data...')
             flag = True
             trie.clear_trie()
             try:
@@ -74,24 +74,23 @@ if __name__ == "__main__":
                     if error == 0:  # if exception happens this doesn't run
                         start_time = time()
                         result_set = execute_query(trie, criteria, path)
-                        # graph.fill_graph_with_words(result_set, criteria)
-                        # rw_ranks = graph.pagerank_using_random_walk(criteria)
-                        # rw_sorted = sorted(rw_ranks.items(), key=lambda kv: kv[1], reverse=True)
 
-                        ranks = graph.pagerank(result_set)
-                        ranks = sorted(ranks.items(), key=lambda kv: kv[1], reverse=True)
+                        ranks = graph.pagerank(result_set)  # ranks is a list of tuples
 
-                        # print(rw_sorted)
-                        # graph.clear_words()  # dictionary in vertex is cleared so that the next search result is correct
-                        # print(len(result_set))
-                        # for el in result_set:
-                        #     print('[' + el + ', ' + str(result_set.my_set[el]) + ']')
+                        heap = MaxHeap()
+                        for key in ranks.keys():  # ranks is an object of MySet where key is filename, value is rang number
+                            heap.add(ranks[key], key)  # in heap key is rang number, while value is filename
+
+                        sorted_ranks = []  # list of tuples
+
+                        while not heap.is_empty():
+                            sorted_ranks.append(heap.remove_max())
 
                         elapsed_time = time() - start_time
                         print(
                             Colors.FG.blue + "Found %d result(s) in %.2f second(s)" % (len(result_set), elapsed_time) +
                             Colors.reset)
-                        pagination(ranks)
+                        pagination(sorted_ranks)
 
                 except Exception:
                     print(Colors.FG.yellow + 'Word not found' + Colors.reset)
