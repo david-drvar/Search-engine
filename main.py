@@ -24,9 +24,9 @@ if __name__ == "__main__":
     stop = False
     flag = False
     path = ""
-    # Ilijin : C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api
+    path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
     # todo: change this for release version
-    path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html"
+    # path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html"
     graph = Graph()
     trie = Trie()
 

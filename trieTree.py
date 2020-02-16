@@ -54,12 +54,12 @@ class Trie:
                     found = True                           # and we raise the flag up
                     break
             if not found:                                  # if there isn't any node matching the char
-                raise Exception                            # we raise an exception
-                return
+                # raise Exception                            # we raise an exception
+                return []
         if current.isEnd:                          # have we reached the end of the word and current node is ending node
             return current.files                   # we return the file info that node contained
         else:                                      # in case the current node isn't an ending one
-            raise Exception                        # we raise an exception
+            return []                              # we raise an exception
 
     def print_trie(self, curr):         # just to check if I did it right TODO erase when done
         current = curr

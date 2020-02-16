@@ -83,4 +83,7 @@ def execute_query(trie, criteria, path):
             for file_info in files:
                 new_set.add(file_info.file, file_info.appearances)
             result = result.union(new_set)
-        return result
+        if not result:
+            raise Exception
+        else:
+            return result
