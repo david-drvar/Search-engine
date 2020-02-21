@@ -24,9 +24,10 @@ if __name__ == "__main__":
     stop = False
     flag = False
     path = ""
-    path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
+    # path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
     # todo: change this for release version
-    # path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html"
+    path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html\\faq"
+
     graph = Graph()
     trie = Trie()
 
@@ -35,7 +36,7 @@ if __name__ == "__main__":
         ans = input(Colors.FG.red + '>> ' + Colors.reset)
 
         if ans == '1':
-            # path = ""
+            # path = "" todo change
             while path == "":
                 path = input('Enter the name of the directory you wish to search: ')
             print('Processing data...')
@@ -94,10 +95,28 @@ if __name__ == "__main__":
                 print(Colors.FG.yellow + 'You need to enter directory name first' + Colors.reset)
         elif ans == '3':
             query = ""
-            while query == "":
-                query = input("Enter search criterion (use &&, ||, ! operators or blank space): ")
+            # while query == "":
+            #     query = input("Enter search criterion (use &&, ||, ! operators or blank space): ")
             try:
-                make_ir(query)
+                result_set = make_ir(query, trie, path)
+
+                ranks = graph.pagerank(result_set)  # ranks is a list of tuples
+
+                heap = MaxHeap()
+                for key in ranks.keys():  # ranks is an object of MySet where key is filename, value is rang number
+                    heap.add(ranks[key], key)  # in heap key is rang number, while value is filename
+
+                sorted_ranks = []  # list of tuples
+
+                while not heap.is_empty():
+                    sorted_ranks.append(heap.remove_max())
+
+                print(
+                    Colors.FG.blue + "Found %d result(s) " % (len(result_set)) +
+                    Colors.reset)
+
+                pagination(sorted_ranks)
+
             except Exception:
                 print(Colors.FG.yellow + "Search criterion defined incorrectly" + Colors.reset)
         elif ans == 'Q':
