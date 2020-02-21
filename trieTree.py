@@ -25,24 +25,18 @@ class Trie:
         for char in word:
             flag = False
             element = TrieNode(char)
-            if len(current.children) == 0:
+            for child in current.children:
+                if child.char.lower() == char.lower():
+                    current = child
+                    flag = True
+                    break
+            if not flag:
                 current.children.append(element)
                 element.parent = current
                 current = element
-            else:
-                for child in current.children:
-                    if child.char.lower() == char.lower():
-                        current = child
-                        flag = True
-                        break
-                if not flag:
-                    current.children.append(element)
-                    element.parent = current
-                    current = element
 
         current.isEnd = True
         current.files.append(file_info)
-        # current.files = file_list
 
     def search_trie(self, word):
         current = self.root                                # we start from the root

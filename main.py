@@ -70,30 +70,26 @@ if __name__ == "__main__":
                           Colors.reset)
                     error = 1
 
-                try:
-                    if error == 0:  # if exception happens this doesn't run
-                        start_time = time()
-                        result_set = execute_query(trie, criteria, path)
+                if error == 0:  # if exception happens this doesn't run
+                    start_time = time()
+                    result_set = execute_query(trie, criteria, path)
 
-                        ranks = graph.pagerank(result_set)  # ranks is a list of tuples
+                    ranks = graph.pagerank(result_set)  # ranks is a list of tuples
 
-                        heap = MaxHeap()
-                        for key in ranks.keys():  # ranks is an object of MySet where key is filename, value is rang number
-                            heap.add(ranks[key], key)  # in heap key is rang number, while value is filename
+                    heap = MaxHeap()
+                    for key in ranks.keys():  # ranks is an object of MySet where key is filename, value is rang number
+                        heap.add(ranks[key], key)  # in heap key is rang number, while value is filename
 
-                        sorted_ranks = []  # list of tuples
+                    sorted_ranks = []  # list of tuples
 
-                        while not heap.is_empty():
-                            sorted_ranks.append(heap.remove_max())
+                    while not heap.is_empty():
+                        sorted_ranks.append(heap.remove_max())
 
-                        elapsed_time = time() - start_time
-                        print(
-                            Colors.FG.blue + "Found %d result(s) in %.2f second(s)" % (len(result_set), elapsed_time) +
-                            Colors.reset)
-                        pagination(sorted_ranks)
-
-                except Exception:
-                    print(Colors.FG.yellow + 'Word not found' + Colors.reset)
+                    elapsed_time = time() - start_time
+                    print(
+                        Colors.FG.blue + "Found %d result(s) in %.2f second(s)" % (len(result_set), elapsed_time) +
+                        Colors.reset)
+                    pagination(sorted_ranks)
             else:
                 print(Colors.FG.yellow + 'You need to enter directory name first' + Colors.reset)
         elif ans == '3':
