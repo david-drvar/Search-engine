@@ -148,7 +148,7 @@ def evaluate_tree(node, trie, path):
 
 def make_ir(query, trie, path):
     # query = "!(java (python programming))"
-    query = "java || python || language"
+    # query = "java || python || language"
     grammar = Grammar.from_file("bison_flex_grammar.txt")
     parser = Parser(grammar, actions=actions)
     ir_tree = parser.parse(query)

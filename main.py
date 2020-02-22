@@ -24,9 +24,9 @@ if __name__ == "__main__":
     stop = False
     flag = False
     path = ""
-    # path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
+    path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
     # todo: change this for release version
-    path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html\\faq"
+    #path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html\\faq"
 
     graph = Graph()
     trie = Trie()
@@ -37,8 +37,8 @@ if __name__ == "__main__":
 
         if ans == '1':
             # path = "" todo change
-            while path == "":
-                path = input('Enter the name of the directory you wish to search: ')
+            # while path == "":
+            #     path = input('Enter the name of the directory you wish to search: ')
             print('Processing data...')
             flag = True
             trie.clear_trie()
@@ -94,31 +94,35 @@ if __name__ == "__main__":
             else:
                 print(Colors.FG.yellow + 'You need to enter directory name first' + Colors.reset)
         elif ans == '3':
-            query = ""
-            # while query == "":
-            #     query = input("Enter search criterion (use &&, ||, ! operators or blank space): ")
-            try:
-                result_set = make_ir(query, trie, path)
+            if flag:
+                query = ""
+                while query == "":
+                    query = input("Enter search criterion (use &&, ||, ! operators or blank space): ")
+                try:
+                    make_ir(query, trie, path)
+                    result_set = make_ir(query, trie, path)
 
-                ranks = graph.pagerank(result_set)  # ranks is a list of tuples
+                    ranks = graph.pagerank(result_set)  # ranks is a list of tuples
 
-                heap = MaxHeap()
-                for key in ranks.keys():  # ranks is an object of MySet where key is filename, value is rang number
-                    heap.add(ranks[key], key)  # in heap key is rang number, while value is filename
+                    heap = MaxHeap()
+                    for key in ranks.keys():  # ranks is an object of MySet where key is filename, value is rang number
+                        heap.add(ranks[key], key)  # in heap key is rang number, while value is filename
 
-                sorted_ranks = []  # list of tuples
+                    sorted_ranks = []  # list of tuples
 
-                while not heap.is_empty():
-                    sorted_ranks.append(heap.remove_max())
+                    while not heap.is_empty():
+                        sorted_ranks.append(heap.remove_max())
 
-                print(
-                    Colors.FG.blue + "Found %d result(s) " % (len(result_set)) +
-                    Colors.reset)
+                    print(
+                        Colors.FG.blue + "Found %d result(s) " % (len(result_set)) +
+                        Colors.reset)
 
-                pagination(sorted_ranks)
+                    pagination(sorted_ranks)
 
-            except Exception:
-                print(Colors.FG.yellow + "Search criterion defined incorrectly" + Colors.reset)
+                except Exception:
+                    print(Colors.FG.yellow + "Search criterion defined incorrectly" + Colors.reset)
+            else:
+                print(Colors.FG.yellow + 'You need to enter directory name first' + Colors.reset)
         elif ans == 'Q':
             stop = True
         else:

@@ -20,7 +20,7 @@ NoExpression
 
 SimpleExpression
   : WORD
-  | '(' OrExpression ')'
+  | '(' ExtendedOr ')'
   ;
 
 terminals
