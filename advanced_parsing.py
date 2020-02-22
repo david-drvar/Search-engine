@@ -69,8 +69,7 @@ actions = {
 
 
 def evaluate_tree(node, trie, path):
-    # if node.right is None and node.left is None:
-    if isinstance(node, str):  # list ce uvek biti str
+    if isinstance(node, str):  # list ce uvek biti string
         return node
     else:
         left = 0
@@ -78,7 +77,7 @@ def evaluate_tree(node, trie, path):
             left = evaluate_tree(node.left, trie, path)
         right = evaluate_tree(node.right, trie, path)
 
-        if isinstance(node, NotNode):  # fixme ne postoji levi
+        if isinstance(node, NotNode):
             if isinstance(right, str):
                 criteria = []
                 criteria.append('NOT')
@@ -100,11 +99,11 @@ def evaluate_tree(node, trie, path):
 
             return result_set
 
-        elif isinstance(node, AndNode):  # oba str, oba setova, levo set i desno str, levo str i desno set
+        elif isinstance(node, AndNode):
             if isinstance(left, str) and isinstance(right, str):
                 # criteria = left + ' AND ' + right
                 criteria = []
-                criteria.append(left)  # java, AND, language MAX DVE RECI U KRITERIJUMU, nebitno and veliko ili malo
+                criteria.append(left)
                 criteria.append('AND')
                 criteria.append(right)
                 result_set = execute_query(trie, criteria, path)
@@ -116,7 +115,7 @@ def evaluate_tree(node, trie, path):
                 criteria = []
                 criteria.append(right)
                 try:
-                    result_right = execute_query(trie, criteria, path)   # ovde mi ne radi dobro ako imam samo jednu rec pretrage npr clojure PROBLEM U EXECUTE_QUERY STO VRACA ERROR ZA PRAZAN RESULT_SET
+                    result_right = execute_query(trie, criteria, path)
                 except Exception:
                     result_right = MySet()
                 result_set = left.intersection(result_right)
@@ -157,13 +156,16 @@ def evaluate_tree(node, trie, path):
 
 
 def make_ir(query, trie, path):
-    # query = "!(java (python programming))"
-    # query = "java || python || language"
-    # query = "! java"
     grammar = Grammar.from_file("bison_flex_grammar.txt")
     parser = Parser(grammar, actions=actions)
     ir_tree = parser.parse(query)
+
     result_set = evaluate_tree(ir_tree, trie, path)
+    if isinstance(result_set,str):  # bice string ako je unesena samo jedna rec za upit
+        criteria = []
+        criteria.append(query)
+        result_set = execute_query(trie, criteria, path)
+
     print(ir_tree)
 
     return result_set
