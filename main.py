@@ -99,7 +99,6 @@ if __name__ == "__main__":
                 while query == "":
                     query = input("Enter search criterion (use &&, ||, ! operators or blank space): ")
                 try:
-                    make_ir(query, trie, path)
                     result_set = make_ir(query, trie, path)
 
                     ranks = graph.pagerank(result_set)  # ranks is a list of tuples
