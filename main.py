@@ -95,8 +95,8 @@ if __name__ == "__main__":
                 print(Colors.FG.yellow + 'You need to enter directory name first' + Colors.reset)
         elif ans == '3':
             query = ""
-            # while query == "":
-            #     query = input("Enter search criterion (use &&, ||, ! operators or blank space): ")
+            while query == "":
+                query = input("Enter search criterion (use &&, ||, ! operators or blank space): ")
             try:
                 result_set = make_ir(query, trie, path)
 

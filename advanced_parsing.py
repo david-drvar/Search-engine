@@ -1,3 +1,4 @@
+from doc_search import tree_traversal
 from my_set import MySet
 from parglare import Parser, Grammar
 from colors import Colors
@@ -69,14 +70,67 @@ actions = {
 
 def evaluate_tree(node, trie, path):
     # if node.right is None and node.left is None:
-    if isinstance(node, str): # list ce uvek biti str
+    if isinstance(node, str):  # list ce uvek biti str
         return node
     else:
-        left = evaluate_tree(node.left, trie, path)
+        left = 0
+        if not isinstance(node, NotNode):  # NotNode nema levi i ako mu pristupim bice error
+            left = evaluate_tree(node.left, trie, path)
         right = evaluate_tree(node.right, trie, path)
 
-        if isinstance(node, OrNode):
-            if isinstance(left, str) and isinstance(right,str):
+        if isinstance(node, NotNode):  # fixme ne postoji levi
+            if isinstance(right, str):
+                criteria = []
+                criteria.append('NOT')
+                criteria.append(right)
+                result_set = execute_query(trie, criteria, path)
+
+            elif isinstance(right, MySet):
+                all_files = MySet()
+                files = []
+                tree_traversal(path, files)
+                for file in files:
+                    all_files.add(file, 0)
+
+                set2 = MySet()
+                for file in right.keys():
+                    set2.add(file,right[file])
+
+                result_set = all_files.difference(set2)
+
+            return result_set
+
+        elif isinstance(node, AndNode):  # oba str, oba setova, levo set i desno str, levo str i desno set
+            if isinstance(left, str) and isinstance(right, str):
+                # criteria = left + ' AND ' + right
+                criteria = []
+                criteria.append(left)  # java, AND, language MAX DVE RECI U KRITERIJUMU, nebitno and veliko ili malo
+                criteria.append('AND')
+                criteria.append(right)
+                result_set = execute_query(trie, criteria, path)
+
+            elif isinstance(left, MySet) and isinstance(right, MySet):
+                result_set = left.intersection(right)
+
+            elif isinstance(left, MySet) and isinstance(right, str):
+                criteria = []
+                criteria.append(right)
+                try:
+                    result_right = execute_query(trie, criteria, path)   # ovde mi ne radi dobro ako imam samo jednu rec pretrage npr clojure PROBLEM U EXECUTE_QUERY STO VRACA ERROR ZA PRAZAN RESULT_SET
+                except Exception:
+                    result_right = MySet()
+                result_set = left.intersection(result_right)
+
+            elif isinstance(left, str) and isinstance(right, MySet):
+                criteria = []
+                criteria.append(left)
+                result_left = execute_query(trie, criteria, path)
+                result_set = right.intersection(result_left)
+
+            return result_set
+
+        elif isinstance(node, OrNode):
+            if isinstance(left, str) and isinstance(right, str):
                 # criteria = left + 'OR' + right
                 criteria = []
                 criteria.append(left)
@@ -87,68 +141,24 @@ def evaluate_tree(node, trie, path):
             elif isinstance(left, MySet) and isinstance(right, MySet):
                 result_set = left.union(right)
 
-            elif isinstance(left,MySet) and isinstance(right,str):
-                criteria = right
+            elif isinstance(left, MySet) and isinstance(right, str):
+                criteria = []
+                criteria.append(right)
                 result_right = execute_query(trie, criteria, path)
                 result_set = left.union(result_right)
 
-            elif isinstance(left, str) and isinstance(right,MySet):
-                criteria = left
-                result_left = execute_query(trie, criteria,path)
-                result_set = right.union(result_left)
-
-            return result_set
-
-        elif isinstance(node, AndNode): # oba str, oba setova, levo set i desno str, levo str i desno set
-            if isinstance(left, str) and isinstance(right,str):
-                # criteria = left + ' AND ' + right
-                criteria = []
-                criteria.append(left)  #java, AND, language MAX DVE RECI U KRITERIJUMU, nebitno and veliko ili malo
-                criteria.append('AND')
-                criteria.append(right)
-                result_set = execute_query(trie, criteria, path)
-
-            elif isinstance(left, MySet) and isinstance(right, MySet):
-                result_set = left.intersection(right)
-
-            elif isinstance(left,MySet) and isinstance(right,str):
-                criteria = right
-                result_right = execute_query(trie, criteria, path)
-                result_set = left.intersection(result_right)
-
-            elif isinstance(left, str) and isinstance(right,MySet):
-                criteria = left
-                result_left = execute_query(trie, criteria,path)
-                result_set = right.intersection(result_left)
-
-            return result_set
-
-        elif isinstance(node, NotNode): # fixme
-            if isinstance(right, str):
-                criteria = []
-                criteria.append('NOT')
-                criteria.append(right)
-                result_set = execute_query(trie, criteria, path)
-
-            elif isinstance(left, MySet) and isinstance(right, MySet):
-                result_set = left.difference(right)
-
-            elif isinstance(left, MySet) and isinstance(right, str):
-                criteria = right
-                result_right = execute_query(trie, criteria, path)
-                result_set = left.difference(result_right)
-
             elif isinstance(left, str) and isinstance(right, MySet):
-                criteria = left
+                criteria = []
+                criteria.append(left)
                 result_left = execute_query(trie, criteria, path)
-                result_set = result_left.difference(right)
+                result_set = right.union(result_left)
 
             return result_set
 
 
 def make_ir(query, trie, path):
     # query = "!(java (python programming))"
-    query = "java || python || language"
+    # query = "! java"
     grammar = Grammar.from_file("bison_flex_grammar.txt")
     parser = Parser(grammar, actions=actions)
     ir_tree = parser.parse(query)
