@@ -106,7 +106,7 @@ def evaluate_tree(node, trie, path):
                 criteria.append(left)
                 criteria.append('AND')
                 criteria.append(right)
-                result_set = execute_query(trie, criteria, path)
+                result_set = execute_query(trie, criteria, path, True)
 
             elif isinstance(left, MySet) and isinstance(right, MySet):
                 result_set = left.intersection(right)
@@ -115,7 +115,7 @@ def evaluate_tree(node, trie, path):
                 criteria = []
                 criteria.append(right)
                 try:
-                    result_right = execute_query(trie, criteria, path)
+                    result_right = execute_query(trie, criteria, path, True)
                 except Exception:
                     result_right = MySet()
                 result_set = left.intersection(result_right)
@@ -123,7 +123,7 @@ def evaluate_tree(node, trie, path):
             elif isinstance(left, str) and isinstance(right, MySet):
                 criteria = []
                 criteria.append(left)
-                result_left = execute_query(trie, criteria, path)
+                result_left = execute_query(trie, criteria, path, True)
                 result_set = right.intersection(result_left)
 
             return result_set
@@ -135,7 +135,7 @@ def evaluate_tree(node, trie, path):
                 criteria.append(left)
                 criteria.append('OR')
                 criteria.append(right)
-                result_set = execute_query(trie, criteria, path)
+                result_set = execute_query(trie, criteria, path, True)
 
             elif isinstance(left, MySet) and isinstance(right, MySet):
                 result_set = left.union(right)
@@ -143,13 +143,13 @@ def evaluate_tree(node, trie, path):
             elif isinstance(left, MySet) and isinstance(right, str):
                 criteria = []
                 criteria.append(right)
-                result_right = execute_query(trie, criteria, path)
+                result_right = execute_query(trie, criteria, path, True)
                 result_set = left.union(result_right)
 
             elif isinstance(left, str) and isinstance(right, MySet):
                 criteria = []
                 criteria.append(left)
-                result_left = execute_query(trie, criteria, path)
+                result_left = execute_query(trie, criteria, path, True)
                 result_set = right.union(result_left)
 
             return result_set

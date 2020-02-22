@@ -39,12 +39,12 @@ def parse_query():
     return criteria
 
 
-def execute_query(trie, criteria, path):
+def execute_query(trie, criteria, path, advanced=False):
     set_list = []
     if not len(criteria):
         return MySet()
 
-    if criteria[0].lower() == "not":
+    if criteria[0].lower() == "not" and not advanced:
         set1 = MySet()
         files = []
         tree_traversal(path, files)
@@ -58,7 +58,7 @@ def execute_query(trie, criteria, path):
 
         return set1.difference(set2)
 
-    elif any(token in criteria for token in special_tokens):
+    elif any(token in criteria for token in special_tokens) and len(criteria) == 3:
         set1 = MySet()
         files = trie.search_trie(criteria[0])
         for file_info in files:
