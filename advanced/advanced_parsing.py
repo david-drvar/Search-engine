@@ -1,8 +1,7 @@
-from doc_search import tree_traversal
-from my_set import MySet
+from basic.doc_search import tree_traversal
+from structures.my_set import MySet
 from parglare import Parser, Grammar
-from colors import Colors
-from query_parser import execute_query
+from basic.query_parser import execute_query
 
 
 class OrNode:
@@ -156,7 +155,7 @@ def evaluate_tree(node, trie, path):
 
 
 def make_ir(query, trie, path):
-    grammar = Grammar.from_file("bison_flex_grammar.txt")
+    grammar = Grammar.from_file("advanced\\bison_flex_grammar.txt")
     parser = Parser(grammar, actions=actions)
     ir_tree = parser.parse(query)
 
@@ -165,7 +164,5 @@ def make_ir(query, trie, path):
         criteria = []
         criteria.append(query)
         result_set = execute_query(trie, criteria, path)
-
-    print(ir_tree)
 
     return result_set

@@ -1,15 +1,13 @@
 from time import time
 
-from advanced_parsing import make_ir
-from colors import Colors
-from doc_search import *
-from graph import Graph
-from max_heap import MaxHeap
-from pagination import pagination
-from query_parser import *
+from advanced.advanced_parsing import make_ir
+from util.colors import Colors
+from basic.doc_search import *
+from structures.graph import Graph
+from structures.max_heap import MaxHeap
+from basic.pagination import pagination
+from basic.query_parser import *
 
-
-# todo: objasni sve u readME!
 
 def print_menu():
     print('Choose one of the following options:')
@@ -24,9 +22,6 @@ if __name__ == "__main__":
     stop = False
     flag = False
     path = ""
-    path = "C:\\Users\\Asus\\Documents\\PyProject\\Search-engine\\python-2.7.7-docs-html\\c-api"
-    # todo: change this for release version
-    #path = "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html"
 
     graph = Graph()
     trie = Trie()
@@ -36,9 +31,9 @@ if __name__ == "__main__":
         ans = input(Colors.FG.red + '>> ' + Colors.reset)
 
         if ans == '1':
-            # path = "" todo change
-            # while path == "":
-            #     path = input('Enter the name of the directory you wish to search: ')
+            path = ""
+            while path == "":
+                path = input('Enter the name of the directory you wish to search: ')
             print('Processing data...')
             flag = True
             trie.clear_trie()

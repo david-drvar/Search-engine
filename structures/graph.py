@@ -1,5 +1,4 @@
-from vertex import Vertex
-import random
+from structures.vertex import Vertex
 
 
 class Graph:

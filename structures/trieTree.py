@@ -3,7 +3,7 @@ class FileInfo:
         self.file = file
         self.appearances = 1
 
-    def __str__(self):                                          # no apparent reason, just to check TODO erase when done
+    def __str__(self):
         return "[" + self.file + ", " + str(self.appearances) + "]"
 
 
@@ -55,7 +55,7 @@ class Trie:
         else:                                      # in case the current node isn't an ending one
             return []                              # we raise an exception
 
-    def print_trie(self, curr):         # just to check if I did it right TODO erase when done
+    def print_trie(self, curr):
         current = curr
         if len(current.children) == 0:
             return

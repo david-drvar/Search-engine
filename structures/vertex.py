@@ -1,8 +1,8 @@
 class Vertex:
     def __init__(self, key):
         self.words_count = {}
-        self.id = key  # TODO: DAVID : IMPORTANT! make key a RELATIVE ADDRESS, not a filename
-        self.outgoing = {}  # key is vertex object, value is weight      # todo: if there are more links than there should be more edges?
+        self.id = key
+        self.outgoing = {}  # key is vertex object, value is weight
         self.incoming = {}  # these are empty dictionaries!
 
     def add_outgoing(self, nbr, weight=None):

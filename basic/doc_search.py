@@ -1,6 +1,6 @@
 import os
-from pyParser import Parser
-from trieTree import *
+from basic.pyParser import Parser
+from structures.trieTree import *
 
 
 def tree_traversal(path, files):

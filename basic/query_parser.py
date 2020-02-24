@@ -1,6 +1,5 @@
-from my_set import *
-from trieTree import *
-from doc_search import tree_traversal
+from structures.my_set import *
+from basic.doc_search import tree_traversal
 
 special_tokens = ["AND", "OR", "NOT", "and", "or", "not"]
 
@@ -11,9 +10,10 @@ def parse_query():
     found_not = False
     while query == "":
         query = input('Type the search criteria: ')
+        query = query.lower()
         criteria = query.split()
 
-    if criteria[0].lower() == "not":
+    if criteria[0] == "not":
         if len(criteria) != 2:
             raise IndexError
         elif criteria[1] in special_tokens:
@@ -28,7 +28,7 @@ def parse_query():
 
     # handles repetitive words by getting rid of them
     if found_special and criteria[0] == criteria[2]:
-        if criteria[1].lower() == "not":
+        if criteria[1] == "not":
             criteria.clear()
         else:
             del criteria[2]
