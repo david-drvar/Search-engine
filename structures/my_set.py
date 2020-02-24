@@ -1,4 +1,3 @@
-
 class MySet:
     def __init__(self):
         self.my_set = {}
@@ -24,9 +23,6 @@ class MySet:
             del self.my_set[element]
         else:
             raise KeyError("MySet doesn't contain that element")
-
-    def clear(self):
-        self.my_set.clear()
 
     def __iter__(self):
         for element in self.my_set:

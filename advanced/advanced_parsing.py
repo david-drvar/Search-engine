@@ -100,11 +100,11 @@ def evaluate_tree(node, trie, path):
 
         elif isinstance(node, AndNode):
             if isinstance(left, str) and isinstance(right, str):
-                # criteria = left + ' AND ' + right
                 criteria = []
                 criteria.append(left)
-                criteria.append('AND')
-                criteria.append(right)
+                if left != right:  # ako se pojavi upit 'java AND java', kriterijum ostaje samo 'java' da ne bi dva puta sabirali broj pojavljivanja iste reci
+                    criteria.append('AND')
+                    criteria.append(right)
                 result_set = execute_query(trie, criteria, path, True)
 
             elif isinstance(left, MySet) and isinstance(right, MySet):
@@ -129,11 +129,11 @@ def evaluate_tree(node, trie, path):
 
         elif isinstance(node, OrNode):
             if isinstance(left, str) and isinstance(right, str):
-                # criteria = left + 'OR' + right
                 criteria = []
                 criteria.append(left)
-                criteria.append('OR')
-                criteria.append(right)
+                if left != right:   # ako se pojavi upit 'java OR java', kriterijum ostaje samo 'java' da ne bi dva puta sabirali broj pojavljivanja iste reci
+                    criteria.append('OR')
+                    criteria.append(right)
                 result_set = execute_query(trie, criteria, path, True)
 
             elif isinstance(left, MySet) and isinstance(right, MySet):
