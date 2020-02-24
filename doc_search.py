@@ -29,20 +29,11 @@ def fill_structures(path, trie, graph):
         cached_words = {}
         found = True
         links, words = p.parse(file)
-        # if file == "C:\\Users\\david\\Desktop\\Programiranje\\Projekat\\Search-engine\\python-2.7.7-docs-html\\c-api\\object.html":
-        #     print(links)
-        for link in links:
-            # splits = link.split('\\')
-            # index = 0
-            # for string in splits:
-            #     if string == 'python-2.7.7-docs-html':
-            #         break
-            #     else:
-            #         index += 1
-            # final_link = '\\'.join(splits[index:])
 
-            # final_link = splits[len(splits) - 1]
-            graph.add_edge(file, link, 1)
+        for link in links:
+            graph.add_edge(file, link)
+        if len(links) == 0:
+            graph.add_vertex(file)
         for word in words:
             if word.lower() in cached_words:
                 cached_words[word.lower()].appearances += 1
